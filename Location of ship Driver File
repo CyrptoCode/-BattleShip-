@@ -1,0 +1,137 @@
+import java.util.Scanner;
+import java.util.Random;
+import java.util.ArrayList;
+
+public class LocationDriver
+{
+	public static void main(String[] args)
+	{
+		//Objects created to use later
+		Random rand = new Random();
+		Scanner input = new Scanner(System.in);
+			
+		// creates my board state
+		char board[][] = new char[5][5];
+				
+		// set & Prints my intial board state
+		startBoard(board);
+		printBoard(board);
+		
+		// Step # 3
+		ArrayList<Location> shipLocation = new ArrayList<Location>(); // outside
+		shipLocation = possibleLoc();
+				
+		// Step # 4
+		for(int i = 0; i < 8; i++)
+		{
+			System.out.println(shipLocation.size() + " Battleships remain!");
+			
+			int attempt = 7-i;
+			
+			System.out.print("Enter a row: ");
+			int row = input.nextInt();
+			
+			while(row < 0 || row > 4)
+			{
+				System.out.println("\nThat's not in the Ocean\n");
+				System.out.print("Enter a row: ");
+				row = input.nextInt();
+			}
+				
+			System.out.print("Enter a col: ");
+			int col = input.nextInt();
+				
+			while(col < 0 || col > board[0].length-1)
+			{
+				System.out.println("\nThat's not in the Ocean\n");
+				System.out.print("Enter a col: ");
+				col = input.nextInt();
+			}
+				
+			//board[row][col] = guess;
+			if (possibleLoc(shipLocation, board, row, col))
+		    {
+				//board[row][col] = '*';	
+				//shipLocation.remove(shipLoc);
+				System.out.println("\nYou sunk my Battleship!");
+			}					
+			else if(!possibleLoc(shipLocation, board, row, col))
+			{
+				System.out.println("\nYou've missed my Battleship!");
+				board[row][col] = 'X';
+			}
+						
+			System.out.println("\n" + attempt + " Turns left \n");
+			printBoard(board);
+		} // End for Loop
+		
+		while(shipLocation.size()> 0)
+		{
+			possibleLoc(shipLocation,board,shipLocation.get(0).getRow(),shipLocation.get(0).getColumn());
+			
+		}			
+		System.out.println("\nGame Over\n");
+		printBoard(board);	
+	}//end Main
+		
+	
+	public static ArrayList<Location> possibleLoc()
+	{
+		ArrayList<Location>shipLocation = new ArrayList<>();
+		for(int i = 0; i < 4; i++)
+		{
+			Random rand = new Random();
+			int row = rand.nextInt(5);
+			int col = rand.nextInt(5);
+			Location shipLoc = new Location (row,col);
+			shipLocation.add(shipLoc);
+		}
+		return shipLocation;
+	}
+	
+	public static boolean possibleLoc(ArrayList<Location> shipLocation,char[][] board,int row, int col)
+	{
+		int hit = -1;
+		for(int i = 0; i < shipLocation.size(); i++)
+		{
+			Location shipLoc = shipLocation.get(i);
+			if (row == shipLoc.getRow()  && shipLoc.getColumn() == col)
+			{
+				hit=i ;
+				break;
+			}
+		}
+		if (hit!= -1)
+		{
+			shipLocation.remove(hit);
+			board[row][col] ='*';
+			return true;
+		}
+		return false;
+	}
+	
+	public static void startBoard(char[][] board)
+	{
+		for(int row = 0; row < board.length; row++)
+		{
+			for(int col = 0; col < board.length; col++)
+			{
+				board[row][col] = 'O';
+			}
+		}
+				
+	}
+	
+	public static void printBoard(char[][] board)
+	{
+		for(int row = 0; row < board.length; row++)
+		{
+			for(int col = 0; col < board[0].length; col++)
+			{
+				System.out.print(board[row][col] + " ");
+			}
+			System.out.println();
+		}
+	}
+
+}
