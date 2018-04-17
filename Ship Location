@@ -1,0 +1,45 @@
+public class Location
+{
+	// attributes
+	private int row;
+	private int column;
+	
+	// setter
+	public void setRow(int row)
+	{
+		this.row = row;		
+	}
+	
+	// getter
+	public int getRow()
+	{
+		return row;
+	}
+	
+	// setter
+	public void setColumn(int column)
+	{
+		this.column = column;
+	}
+	
+	// getter for column
+	public int getColumn()
+	{
+		return column;
+	}
+	
+	// Constructor 
+	public Location(int row, int column)
+	{
+		this.row = row;
+		this.column = column;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+}
